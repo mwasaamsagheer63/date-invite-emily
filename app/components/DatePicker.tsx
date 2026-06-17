@@ -64,6 +64,7 @@ export default function DatePicker() {
           required
           value={date}
           onChange={(e) => setDate(e.target.value)}
+          style={{ colorScheme: "dark" }}
           className="rounded-lg border border-paper/20 bg-ink-deep/60 px-4 py-3 text-paper font-sans focus:border-gold outline-none"
         />
       </div>

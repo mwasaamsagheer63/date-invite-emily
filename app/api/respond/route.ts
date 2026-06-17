@@ -4,7 +4,11 @@ import fs from "fs";
 import path from "path";
 
 const DATA_FILE = path.join(process.cwd(), "data", "responses.json");
-const TO_EMAIL = process.env.NOTIFY_EMAIL || "";
+// Support comma-separated emails e.g. "a@gmail.com,b@gmail.com"
+const TO_EMAILS = (process.env.NOTIFY_EMAIL || "")
+  .split(",")
+  .map((e) => e.trim())
+  .filter(Boolean);
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
 
 type Response = {
@@ -38,21 +42,21 @@ function writeResponses(responses: Response[]) {
 
 async function sendEmail(entry: Response) {
   const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey || !TO_EMAIL) {
-    console.warn("Resend not configured — skipping email send.");
+  if (!apiKey || TO_EMAILS.length === 0) {
+    console.warn("Resend not configured — skipping email send. RESEND_API_KEY or NOTIFY_EMAIL missing.");
     return;
   }
 
   const { Resend } = await import("resend");
   const resend = new Resend(apiKey);
 
-  await resend.emails.send({
+  const result = await resend.emails.send({
     from: FROM_EMAIL,
-    to: TO_EMAIL,
+    to: TO_EMAILS,
     subject: "She said yes 🎉",
     html: `
       <div style="font-family: sans-serif; max-width: 480px;">
-        <h2 style="color:#7a4b5c;">She picked a date</h2>
+        <h2 style="color:#7a4b5c;">She picked a date 🌹</h2>
         <p><strong>Date:</strong> ${entry.date}</p>
         <p><strong>Place preference:</strong> ${entry.place || "(no preference given)"}</p>
         <p><strong>Note:</strong> ${entry.note || "(none)"}</p>
@@ -60,6 +64,12 @@ async function sendEmail(entry: Response) {
       </div>
     `,
   });
+
+  if (result.error) {
+    console.error("Resend error:", JSON.stringify(result.error));
+  } else {
+    console.log("Email sent successfully to:", TO_EMAILS.join(", "), "| id:", result.data?.id);
+  }
 }
 
 export async function POST(req: NextRequest) {
