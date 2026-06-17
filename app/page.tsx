@@ -35,6 +35,11 @@ export default function Home() {
   const glowY = useSpring(useTransform(mouseY, [-300, 300], [0, 100]), {
     stiffness: 80, damping: 30,
   });
+  const glowBg = useTransform(
+    [glowX, glowY],
+    ([x, y]: number[]) =>
+      `radial-gradient(circle at ${x}% ${y}%, rgba(201,162,39,0.15) 0%, transparent 60%)`
+  );
 
   function handleMouseMove(e: React.MouseEvent) {
     if (answered) return;
@@ -83,10 +88,7 @@ export default function Home() {
               aria-hidden="true"
               className="pointer-events-none absolute -inset-px rounded-2xl"
               style={{
-                background: useTransform(
-                  [glowX, glowY],
-                  ([x, y]) => `radial-gradient(circle at ${x}% ${y}%, rgba(201,162,39,0.15) 0%, transparent 60%)`
-                ),
+                background: glowBg,
                 zIndex: -1,
               }}
             />
