@@ -1,22 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  --ink: #1a1023;
-  --ink-deep: #120a18;
-  --gold: #e8b86d;
-  --gold-soft: #f3d39b;
-  --blush: #f2c9c2;
-  --rose: #7a4b5c;
-  --rose-deep: #5c3445;
-  --paper: #f7f2ec;
+  --ink: #06040f;
+  --ink-deep: #0d0820;
+  --ink-card: #110826;
+  --gold: #c9a227;
+  --gold-soft: #e8c86d;
+  --gold-glow: rgba(201, 162, 39, 0.45);
+  --blush: #e8a0b0;
+  --rose: #9b3d5a;
+  --rose-deep: #6b2040;
+  --violet: #7c3aed;
+  --violet-soft: rgba(124, 58, 237, 0.25);
+  --paper: #f5f0e8;
 }
 
 @theme inline {
   --color-ink: var(--ink);
+  --color-ink-deep: var(--ink-deep);
+  --color-ink-card: var(--ink-card);
   --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
   --color-blush: var(--blush);
   --color-rose: var(--rose);
+  --color-rose-deep: var(--rose-deep);
   --color-paper: var(--paper);
+  --color-violet: var(--violet);
   --font-display: var(--font-fraunces);
   --font-sans: var(--font-inter);
 }
@@ -35,6 +44,23 @@ body {
 
 .font-display {
   font-family: var(--font-fraunces), Georgia, serif;
+}
+
+/* Glass card utility */
+.glass-card {
+  background: linear-gradient(
+    135deg,
+    rgba(17, 8, 38, 0.88) 0%,
+    rgba(13, 8, 32, 0.92) 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(245, 240, 232, 0.07);
+  box-shadow:
+    0 0 80px rgba(124, 58, 237, 0.08),
+    0 0 40px rgba(201, 162, 39, 0.06),
+    0 32px 80px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(245, 240, 232, 0.05);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -56,5 +82,5 @@ body {
 
 ::selection {
   background: var(--gold);
-  color: var(--ink-deep);
+  color: var(--ink);
 }

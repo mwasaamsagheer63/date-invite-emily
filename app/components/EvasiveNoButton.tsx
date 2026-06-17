@@ -4,13 +4,13 @@ import { useRef, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 
 const DODGE_MESSAGES = [
-  "Hm, that's strange.",
-  "This button seems to be malfunctioning.",
-  "Still not working. Odd.",
-  "Engineers have been notified (there are no engineers).",
-  "Have you tried the other button?",
-  "This one's just for decoration now.",
-  "At this point it's basically a 'yes' button with extra steps.",
+  "Hmm. That's strange.",
+  "This button seems to have a mind of its own.",
+  "Still not cooperating. Curious.",
+  "Our engineers have been notified. (There are no engineers.)",
+  "Have you considered the other option?",
+  "At this point it's practically volunteering.",
+  "I think the universe is trying to tell you something.",
 ];
 
 type EvasiveNoButtonProps = {
@@ -18,9 +18,7 @@ type EvasiveNoButtonProps = {
 };
 
 export default function EvasiveNoButton({ containerRef }: EvasiveNoButtonProps) {
-  const [position, setPosition] = useState<{ x: number; y: number } | null>(
-    null
-  );
+  const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
   const [dodgeCount, setDodgeCount] = useState(0);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -61,11 +59,16 @@ export default function EvasiveNoButton({ containerRef }: EvasiveNoButtonProps) 
           dodge();
         }}
         animate={position ? { x: position.x, y: position.y } : { x: 0, y: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 18 }}
-        className="rounded-full border border-rose/60 bg-transparent px-7 py-3 text-sm font-medium text-paper/70 transition-colors hover:border-rose"
-        style={{ touchAction: "none" }}
+        transition={{ type: "spring", stiffness: 280, damping: 20 }}
+        className="rounded-full border px-7 py-3 text-sm font-medium font-sans transition-colors"
+        style={{
+          borderColor: "rgba(155, 61, 90, 0.45)",
+          background: "rgba(155, 61, 90, 0.08)",
+          color: "rgba(245, 240, 232, 0.55)",
+          touchAction: "none",
+        }}
       >
-        no <span aria-hidden="true">😭</span>
+        no 💔
       </motion.button>
 
       {message && (
@@ -73,7 +76,8 @@ export default function EvasiveNoButton({ containerRef }: EvasiveNoButtonProps) 
           key={message}
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          className="absolute -bottom-9 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs text-paper/50 font-sans"
+          className="absolute -bottom-9 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-sans"
+          style={{ color: "rgba(245, 240, 232, 0.38)" }}
           role="status"
         >
           {message}
